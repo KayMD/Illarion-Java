@@ -16,11 +16,11 @@
 import com.install4j.gradle.Install4jTask
 
 plugins {
+    id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
 apply plugin: 'java'
-apply plugin: 'application'
 apply plugin: 'maven-publish'
 apply from: '../versions.gradle'
 apply plugin: 'install4j'
@@ -82,9 +82,8 @@ if (hasInstall4jTargetDir) {
 }
 
 javafx {
-    version = '12'
+    version = '14'
     modules = [ 'javafx.controls', 'javafx.fxml' ]
-    configuration = 'compileOnly'
 
     description = 'This is the downloader and launcher of Illarion.'
 }
