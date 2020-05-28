@@ -188,7 +188,8 @@ public final class IllaClient implements EventTopicSubscriber<ConfigChangedEvent
             public void run() {
                 CrashReporter.getInstance().waitForReport();
                 System.err.println("Killed by final death");
-                System.exit(-1);
+                INSTANCE.game.dispose();
+                System.exit(0);
             }
         }, 10000);
     }

@@ -254,7 +254,10 @@ public final class Game implements GameListener {
      */
     @Override
     public void dispose() {
-        nifty = null;
+        if(nifty != null){
+            nifty.exit();
+            nifty = null;
+        }
 
         for (@Nonnull GameState listener : gameStates) {
             listener.dispose();

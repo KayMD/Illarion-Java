@@ -51,7 +51,7 @@ public final class EndState implements GameState {
 
     @Override
     public boolean isClosingGame() {
-        return false;
+        return true;
     }
 
     @Override

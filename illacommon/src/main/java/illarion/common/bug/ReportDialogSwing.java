@@ -72,6 +72,7 @@ public final class ReportDialogSwing implements ReportDialog {
         public void actionPerformed(ActionEvent e) {
             setResult(resultValue);
             closingDialog.setVisible(false);
+            closingDialog.dispose();
         }
     }
 
