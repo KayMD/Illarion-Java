@@ -46,7 +46,7 @@ public final class World {
     @Nonnull
     private static final World INSTANCE = new World();
 
-    public static void shutdownWorld() {
+    private static void shutdownWorld() {
         if (INSTANCE.net != null) {
             INSTANCE.net.disconnect();
         }
@@ -71,7 +71,6 @@ public final class World {
     /**
      * Shutdown every class that is currently maintained by the world.
      */
-    @SuppressWarnings("StaticMethodOnlyUsedInOneClass")
     public static void cleanEnvironment() {
         shutdownWorld();
 

@@ -191,7 +191,7 @@ public final class IllaClient implements EventTopicSubscriber<ConfigChangedEvent
                 INSTANCE.game.dispose();
                 System.exit(0);
             }
-        }, 10000);
+        }, 5000);
     }
 
     /**
