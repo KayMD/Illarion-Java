@@ -25,8 +25,8 @@ buildscript {
         }
     }
     dependencies {
-        classpath group: 'de.undercouch', name: 'gradle-download-task', version: '4.0.4'
-        classpath group: 'com.install4j', name: 'install4j-gradle', version: '7.0.12'
+        classpath group: 'de.undercouch', name: 'gradle-download-task', version: '4.1.1'
+        classpath group: 'com.install4j', name: 'install4j-gradle', version: '8.0.8'
     }
 }
 

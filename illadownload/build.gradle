@@ -14,10 +14,11 @@
  * GNU General Public License for more details.
  */
 import com.install4j.gradle.Install4jTask
+import static groovy.io.FileType.FILES
 
 plugins {
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
 apply plugin: 'java'
@@ -52,7 +53,7 @@ jar {
     dependsOn { gitVersion }
     manifest {
         attributes(
-                'Main-Class': 'illarion.download.Application',
+                'Main-Class': mainClassName,
                 'JavaFX-Feature-Proxy': 'None',
                 'Permissions': 'all-permissions',
                 'Codebase': 'illarion.org',
@@ -86,32 +87,28 @@ if (hasInstall4jTargetDir) {
 
 javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
+    configuration = 'compileOnly'
+    description = 'This is the downloader and launcher of Illarion.'
 }
 
 if (hasTargetDistDir) {
     task clearDistDir(type: Delete) {
         delete project.distsDir
     }
-    jfxDeploy {
-        doFirst {
-            clearDistDir
-        }
-    }
-    task publishDownloader(type: Copy, dependsOn: 'jfxDeploy') {
-        from project.distsDir
+
+    task publishDownloader(type: Copy, dependsOn: configJavafxRun) {
+        from project.distsDirectory
         into file(project.targetDistDir)
     }
 }
 if (hasInstall4jTargetDir && hasInstall4jDir) {
-    task cleanUpForInstall4j(type: Delete) {
+    task createInstall4jDirectory() {
         delete new File(project.buildDir, 'install4j')
-    }
-    task createInstall4jDirectory(dependsOn: cleanUpForInstall4j) {
         def sourceDir = new File(project.buildDir, 'install4j')
         sourceDir.mkdirs()
     }
     task assembleForInstall4j(type: Copy) {
-        dependsOn jfxJar, createInstall4jDirectory
+        dependsOn createInstall4jDirectory, publishDownloader, clearDistDir
 
         from new File(project.buildDir, "libs/${project.archivesBaseName}-${project.version}.jar")
         configurations.runtime.each { File file ->
@@ -119,9 +116,13 @@ if (hasInstall4jTargetDir && hasInstall4jDir) {
                 from file
             }
         }
+        new File(project.projectDir, "bin").eachFileRecurse(FILES) { file ->
+            if(file.getPath().endsWith('.jar')) {
+                from file
+            }
+        }
         into new File(project.buildDir, 'install4j')
     }
-
     if (project.hasProperty('keyFile')) {
         apply from: project.keyFile
     }
